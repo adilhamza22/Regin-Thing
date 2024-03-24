@@ -24,6 +24,13 @@ def view_top_10_from_database():
     conn = sqlite3.connect('courses.db')
     c = conn.cursor()
     
+    # Check if the database is empty
+    c.execute("SELECT COUNT(*) FROM courses")
+    total_entries = c.fetchone()[0]
+    if total_entries == 0:
+        logging.info("Database is empty. Run the crawlers first.")
+        return
+    
     # Retrieve top 10 course information from the database
     c.execute("SELECT * FROM courses LIMIT 10")
     top_10_courses = c.fetchall()
@@ -41,9 +48,12 @@ def view_bottom_from_database():
     conn = sqlite3.connect('courses.db')
     c = conn.cursor()
     
-    # Retrieve total number of entries in the database
+    # Check if the database is empty
     c.execute("SELECT COUNT(*) FROM courses")
     total_entries = c.fetchone()[0]
+    if total_entries == 0:
+        logging.info("Database is empty. Run the crawlers first.")
+        return
     
     # Retrieve bottom 10 course information from the database
     c.execute("SELECT * FROM courses ORDER BY ROWID DESC LIMIT 10")
@@ -62,6 +72,13 @@ def view_all_from_database():
     conn = sqlite3.connect('courses.db')
     c = conn.cursor()
     
+    # Check if the database is empty
+    c.execute("SELECT COUNT(*) FROM courses")
+    total_entries = c.fetchone()[0]
+    if total_entries == 0:
+        logging.info("Database is empty. Run the crawlers first.")
+        return
+    
     # Retrieve all course information from the database
     c.execute("SELECT * FROM courses")
     all_courses = c.fetchall()
@@ -73,6 +90,7 @@ def view_all_from_database():
     
     # Close connection
     conn.close()
+
 
 def run_crawlers():
     logging.info("Running crawlers...")
