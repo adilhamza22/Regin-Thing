@@ -1,8 +1,10 @@
+import concurrent.futures
+import sqlite3
+import logging
+
 import coursera_crawler
 import udemy_crawler
 import harvard_crawler
-import sqlite3
-import logging
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -57,11 +59,18 @@ def print_top_10_from_database():
     conn.close()
 
 def main():
-    # Crawl courses from different sources
-    coursera_courses = crawl_coursera_courses()
-    udemy_courses = crawl_udemy_courses()
-    harvard_courses = crawl_harvard_courses()
-    
+    # Crawl courses from different sources in parallel
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        # Submit the crawling tasks to the executor
+        future_coursera = executor.submit(crawl_coursera_courses)
+        future_udemy = executor.submit(crawl_udemy_courses)
+        future_harvard = executor.submit(crawl_harvard_courses)
+
+        # Retrieve the results from the futures
+        coursera_courses = future_coursera.result()
+        udemy_courses = future_udemy.result()
+        harvard_courses = future_harvard.result()
+
     # Store course information in the database
     all_courses = coursera_courses + udemy_courses + harvard_courses
     store_in_database(all_courses)
