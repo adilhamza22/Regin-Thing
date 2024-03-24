@@ -13,8 +13,9 @@ Before running the program, ensure you have the following dependencies installed
 
 You can install these dependencies using pip:
 
-`bash`
+````bash
 pip install selenium sqlite3 requests beautifulsoup4
+````
 
 ## How to Run
 To run the program, follow these steps:
