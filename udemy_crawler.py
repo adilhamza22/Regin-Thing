@@ -5,7 +5,7 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.firefox.options import Options
 import time
 
-def crawl_udemy(page_number):
+def crawl_udemy(page_number=1):
     current_directory = os.path.dirname(os.path.abspath(__file__))
     gecko_driver_path = os.path.join(current_directory, "geckodriver.exe")
     
